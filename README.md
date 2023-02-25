@@ -58,3 +58,8 @@ command > translate Chinese
 Translate Result: 中文
 command > exit
 ```
+
+## 教程
+
+[使用说明](https://www.bilibili.com/video/BV1U84y177TF/?share_source=copy_web&vd_source=ab26e7710bc0979e20c08f2417d84cf8)
+
