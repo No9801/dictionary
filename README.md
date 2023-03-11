@@ -3,7 +3,7 @@
 ## 构建
 
 1. 进入`dictionary/`文件夹
-2. 运行`make dictionary`
+2. 运行`make dictionary.exe`
 3. 运行成功后，会在`dictionary/`目录下生成`dictionary.exe`
 
 ## 命令

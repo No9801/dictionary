@@ -2,3 +2,4 @@
 *.command
 units000
 *.exe
+*.o
