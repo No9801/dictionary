@@ -1,6 +1,7 @@
 #ifndef _DICTIONARYFUNCTION_H_
 #define _DICTIONATYFUNCTION_H_
 
+#include <iostream>
 #include <string>
 
 #include "word.h"
@@ -12,6 +13,6 @@ bool delete_(const std::string&, Word**, int&);
 bool update(const std::string&, const std::string&, Word**, const int&);
 Word* search(const std::string&, Word**, const int&);
 Word* translate(const std::string&, Word**, const int&);
-
+std::istream& readString(std::istream&, std::string&);
 
 #endif /* _DICTIONARYFUNCTION_H_ */

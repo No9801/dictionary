@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 #include "word.h"
 
@@ -34,7 +35,14 @@ const string& Word::getEnglish() {
     return this -> English;
 }
 
+string strWithBlanks(const string& s) {
+    if (find(s.begin(), s.end(), ' ') != s.end()) {
+        return "\"" + s + "\"";
+    }
+    return s;
+}
+
 ostream& operator<<(ostream& ots, const Word& word) {
-    ots << word.Chinese << " " << word.English;
+    ots << strWithBlanks(word.Chinese) << " " << strWithBlanks(word.English);
     return ots;
 }

@@ -16,19 +16,26 @@
 
 using namespace std;
 
+// #define DEBUG
+
 void getHelp() {
     cout << "Help of this program:" << endl
     << "\tinsert\t\t<Chinese>\t<English>" << endl
     << "\tdelete\t\t<Chinese>" << endl
+    << "\tdeleteAll" << endl
     << "\tupdate\t\t<Chinese>\t<English>" << endl
     << "\tsearch\t\t<Chinese>" << endl
     << "\ttranslate\t<English>" << endl
+#ifdef DEBUG
     << "\tshow\t\t<number>" << endl
+#endif
     << "\talias\t\t<alias>\t\t<command>" << endl
     << "\tload\t\t<file>" << endl
     << "\tsave\t\t<file>" << endl
+#ifdef DEBUG
     << "\tshow\t\t< $count | $alias | $word >" << endl
     << "\tlist" << endl
+#endif
     << "\thelp" << endl
     << "\texit" << endl;
 }
@@ -38,42 +45,43 @@ void parser(Word** dic, int& dicCount, Word** alias, int& aliasCount,
     string command;
     string argument1;
     string argument2;
-    while ((ots << "command > ", ins >> command)) {
+    while ((ots << "command > ", readString(ins, command))) {
         Word* cmd;
         if ((cmd = search(command, alias, aliasCount)) != nullptr) {
             command = cmd->getEnglish();
         }
         if (command == "insert") {
-            ins >> argument1 >> argument2;
+            readString(readString(ins, argument1), argument2);
             if (!insert(argument1, argument2, dic, dicCount)) {
                 ers << "Insert Failed" << endl;
             } else {
                 ots << "Insert Complete" << endl;
             }
         } else if (command == "delete") {
-            ins >> argument1;
+            readString(ins, argument1);
             if (!delete_(argument1, dic, dicCount)) {
                 ers << "Delete Failed" << endl;
             } else {
                 ots << "Delete Complete" << endl;
             }
         } else if (command == "update") {
-            ins >> argument1 >> argument2;
+            readString(readString(ins, argument1), argument2);
             if (!update(argument1, argument2, dic, dicCount)) {
                 ers << "Update Failed" << endl;
             } else {
                 ots << "Update Complete" << endl;
             }
         } else if (command == "search") {
-            ins >> argument1;
+            readString(ins, argument1);
             Word* result;
             if ((result = search(argument1, dic, dicCount)) != nullptr) {
                 ots << "Search Result: " << result -> getEnglish() << endl;
             } else {
                 ers << "Not Found!" << endl;
             }
+#ifdef DEBUG
         } else if (command == "show") {
-            ins >> argument1;
+            readString(ins, argument1);
             int i = -1;
             if (argument1[0] == '$') {
                 if (argument1 == "$count") {
@@ -105,18 +113,19 @@ void parser(Word** dic, int& dicCount, Word** alias, int& aliasCount,
                 }
                 ots << dic[i] -> toString() << endl;
             }
+#endif
         } else if (command == "help") {
             getHelp();
         } else if (command == "exit") {
             return;
         } else if (command == "load") {
-            ins >> argument1;
+            readString(ins, argument1);
             ifstream ifs(argument1, ios_base::in);
             ofstream ofs("units000", ios_base::out);
             parser(dic, dicCount, alias, aliasCount, ifs, ofs, ofs);
             ots << "Load Complete" << endl;
         } else if (command == "save") {
-            ins >> argument1;
+            readString(ins, argument1);
             ofstream dataOfs(argument1 + DataExt, ios_base::out);
             ofstream commandOfs(argument1 + CommandExt, ios_base::out);
             for (int i = 0; i != dicCount; ++i) {
@@ -130,13 +139,15 @@ void parser(Word** dic, int& dicCount, Word** alias, int& aliasCount,
             dataOfs.close();
             commandOfs.close();
             ots << "Save Complete" << endl;
+#ifdef DEBUG
         } else if (command == "list") {
             for (int i = 0; i != dicCount; ++i) {
                 ots << (dic[i])->toString() << "\n";
             }
             ots << flush;
+#endif
         } else if (command == "translate") {
-            ins >> argument1;
+            readString(ins, argument1);
             Word* result;
             if ((result = translate(argument1, dic, dicCount)) != nullptr) {
                 ots << "Translate Result: " << result -> getChinese() << endl;
@@ -144,7 +155,7 @@ void parser(Word** dic, int& dicCount, Word** alias, int& aliasCount,
                 ers << "Not Found!" << endl;
             }
         } else if (command == "alias") {
-            ins >> argument1 >> argument2;
+            readString(readString(ins, argument1), argument2);
             if ((cmd = search(argument1, alias, aliasCount)) != nullptr) {
                 update(argument1, argument2, alias, aliasCount);
             } else {
@@ -157,18 +168,20 @@ void parser(Word** dic, int& dicCount, Word** alias, int& aliasCount,
             }
             dicCount = 0;
             ots << "Delete Complete" << endl;
+#ifdef DEBUG
         } else if (command == "_insert") {
-            ins >> argument1 >> argument2;
+            readString(readString(ins, argument1), argument2);
             if (!insert(argument1, argument2, dic, dicCount)) {
                 ers << "Insert Failed" << endl;
             }
         } else if (command == "_alias") {
-            ins >> argument1 >> argument2;
+            readString(readString(ins, argument1), argument2);
             if ((cmd = search(argument1, alias, aliasCount)) != nullptr) {
                 update(argument1, argument2, alias, aliasCount);
             } else {
                 insert(argument1, argument2, alias, aliasCount);
             }
+#endif
         }
     }
 }

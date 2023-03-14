@@ -1,5 +1,7 @@
 #include <string>
+#include <iostream>
 #include <algorithm>
+// #include <sstream>
 
 #include "dictionaryFunction.h"
 #include "word.h"
@@ -56,4 +58,23 @@ Word* translate(const string& english, Word** dic, const int& dicCount) {
         return nullptr;
     }
     return *word;
+}
+
+istream& readString(istream& ins, string& str) {
+    str = "";
+    // ostringstream oss(str);
+    string buff;
+    if (ins >> buff && buff.front() == '"') {
+        (str += buff.substr(1)) += " ";
+        while (ins >> buff) {
+            if (buff.back() == '"') {
+                str += buff.substr(0, buff.size() - 1);
+                return ins;
+            }
+            (str += buff) += " ";
+        }
+        return ins;
+    }
+    str += buff;
+    return ins;
 }

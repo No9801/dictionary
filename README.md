@@ -1,10 +1,17 @@
 # 词典程序
 
+## 编译器依赖
+
+1. GNU`g++`编译器
+2. `makefile`命令行工具
+
 ## 构建
 
 1. 进入`dictionary/`文件夹
 2. 运行`make dictionary.exe`
 3. 运行成功后，会在`dictionary/`目录下生成`dictionary.exe`
+
+如果要构建`debug`版，请输入`make dictionary-debug.exe`
 
 ## 命令
 
@@ -19,6 +26,7 @@ save    <文件名>         // 将词典保存到文件里
 help                    // 获取命令帮助
 exit                    // 退出程序
 ```
+**注意！**：如果中英文里有空格，请在两边打上英文引号`"`
 
 ## 演示
 
